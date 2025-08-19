@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FormModal } from "../form-modal";
+import { FormModal } from "../forms/form-modal";
 
 export const ButtonBooking = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +12,6 @@ export const ButtonBooking = () => {
       >
         Booking Sekarang
       </button>
-      {/* Modal */}
       <FormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );

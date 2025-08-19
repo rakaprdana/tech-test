@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { BookingFormData } from "../interfaces/booking-form";
 import axios from "axios";
 
-export const useBookingForm = (onClose: () => void) => {
+export const useBookingForm = (onSuccess: (queueNumber: string) => void) => {
   const [form, setForm] = useState<BookingFormData>({
     customerName: "",
     customerPhone: "",
@@ -36,10 +36,9 @@ export const useBookingForm = (onClose: () => void) => {
         import.meta.env.VITE_API_URL || process.env.NEXT_PUBLIC_API_URL;
 
       const res = await axios.post(`${apiUrl}/bookings`, form);
-
       console.log("Booking berhasil disimpan:", res.data);
-
-      onClose();
+      const randomQueue = `TQ-${Math.floor(1000 + Math.random() * 9000)}`;
+      onSuccess(randomQueue);
       setForm({
         customerName: "",
         customerPhone: "",
