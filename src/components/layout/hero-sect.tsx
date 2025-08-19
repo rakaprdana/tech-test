@@ -1,11 +1,10 @@
 import Display from "../../assets/image/IMG_7295.webp";
-import { ButtonBooking } from "../elements/ui/btn-booking";
 
 export const HeroSection = () => {
   return (
     <>
-      <div className="relative font-sans text-gray-900">
-        <section className="relative h-screen flex items-center justify-center bg-gray-900 text-white">
+      <div className="relative font-sans text-textBold">
+        <section className="relative h-screen flex items-center justify-center bg-textBold text-white">
           <img
             src={Display}
             alt="Torque & Tune"
@@ -20,7 +19,6 @@ export const HeroSection = () => {
               maksimal.
             </p>
           </div>
-          <ButtonBooking />
         </section>
       </div>
     </>
