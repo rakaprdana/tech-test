@@ -39,3 +39,25 @@ export function Stock() {
 
   console.log("Total stock tiap wadah:", stockPerType);
 }
+
+//soal 4
+/**
+ * Catatan terkait data fruits:
+ * 1. Duplikasi fruitId:
+ *    - Terdapat beberapa entri dengan fruitId = 5 (Jeruk Bali, KURMA, Salak).
+ *    - Seharusnya setiap fruitId bersifat unik agar tidak membingungkan saat CRUD.
+ *
+ * 2. Inkonstistensi penulisan fruitName:
+ *    - Ada "Apel" vs "apel", dan "Kurma" vs "KURMA".
+ *    - Secara logika sama, tapi secara string dianggap berbeda.
+ *    - Perlu normalisasi (misalnya toLowerCase atau TitleCase).
+ *
+ * 3. Duplikasi data buah yang sama:
+ *    - Contoh: "Kurma" muncul dua kali dengan stok berbeda (20 + 20).
+ *    - Hal ini bisa menyebabkan perhitungan stok tidak akurat.
+ *
+ * 4. Saran perbaikan:
+ *    - Pastikan fruitId unik.
+ *    - Normalisasi fruitName sebelum disimpan.
+ *    - Gabungkan stok jika ada duplikat nama buah.
+ */
