@@ -12,25 +12,23 @@ interface Props {
 }
 
 export const BookingForm: React.FC<Props> = ({ onClose }) => {
-  const { form, handleChange, handleSubmit } = useBookingForm(onClose);
+  const { form, handleChange, handleSubmit } = useBookingForm();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [queueNumber, setQueueNumber] = useState("");
   const [isFailedOpen, setIsFailedOpen] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      await handleSubmit(e);
 
-    const isBusy = Math.random() < 0.5;
-
-    if (isBusy) {
+      const randomQueue = `A-${Math.floor(1000 + Math.random() * 9000)}`;
+      setQueueNumber(randomQueue);
+      setIsSuccessOpen(true);
+    } catch (error) {
+      console.error("Booking gagal:", error);
       setIsFailedOpen(true);
-      return;
     }
-
-    await handleSubmit(e);
-    const randomQueue = "A-" + Math.floor(1000 + Math.random() * 9000);
-    setQueueNumber(randomQueue);
-    setIsSuccessOpen(true);
   };
 
   return (
@@ -115,7 +113,6 @@ export const BookingForm: React.FC<Props> = ({ onClose }) => {
             />
           </div>
         </div>
-
         <input type="hidden" name="status" value={form.status} />
         <FormActions onClose={onClose} />
       </form>

@@ -1,9 +1,8 @@
-import process from "process";
 import { useState } from "react";
 import type { BookingFormData } from "../interfaces/booking-form";
 import axios from "axios";
 
-export const useBookingForm = (onSuccess: (queueNumber: string) => void) => {
+export const useBookingForm = () => {
   const [form, setForm] = useState<BookingFormData>({
     customerName: "",
     customerPhone: "",
@@ -17,7 +16,6 @@ export const useBookingForm = (onSuccess: (queueNumber: string) => void) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -30,15 +28,10 @@ export const useBookingForm = (onSuccess: (queueNumber: string) => void) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
-      const apiUrl =
-        import.meta.env.VITE_API_URL || process.env.NEXT_PUBLIC_API_URL;
-
+      const apiUrl = import.meta.env.VITE_API_URL;
       const res = await axios.post(`${apiUrl}/bookings`, form);
-      console.log("Booking berhasil disimpan:", res.data);
-      const randomQueue = `TQ-${Math.floor(1000 + Math.random() * 9000)}`;
-      onSuccess(randomQueue);
+
       setForm({
         customerName: "",
         customerPhone: "",
@@ -50,11 +43,21 @@ export const useBookingForm = (onSuccess: (queueNumber: string) => void) => {
         status: "pending",
         notes: "",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message || err.message || "Terjadi kesalahan"
-      );
+
+      return res.data;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const message =
+          err.response?.data?.message || err.message || "Terjadi kesalahan";
+        setError(message);
+        throw new Error(message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+        throw err;
+      } else {
+        setError("Terjadi kesalahan");
+        throw new Error("Terjadi kesalahan");
+      }
     } finally {
       setLoading(false);
     }
